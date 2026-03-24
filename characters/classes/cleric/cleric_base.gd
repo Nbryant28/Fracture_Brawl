@@ -117,20 +117,7 @@ func use_holy_word_wrath():
 	if is_silenced:
 		return
 	wrath_cooldown = WRATH_COOLDOWN_MAX
-
-	var hitbox = Area3D.new()
-	var shape = CollisionShape3D.new()
-	var box = BoxShape3D.new()
-	box.size = Vector3(2.0, 2.0, 4.0)
-	shape.shape = box
-	hitbox.add_child(shape)
-	hitbox.position = Vector3(0, 1.0, -2.0)
-	add_child(hitbox)
-	hitbox.body_entered.connect(_on_wrath_hit)
-
-	await get_tree().create_timer(0.2).timeout
-	hitbox.queue_free()
-
+	spawn_hitbox(Vector3(2.0, 2.0, 4.0), Vector3(0, 1.0, -2.0), 0.2, _on_wrath_hit)
 	print("Holy Word: Wrath!")
 
 func _on_wrath_hit(body):
@@ -144,7 +131,7 @@ func _on_wrath_hit(body):
 
 	# 50% bonus vs Corrode carriers
 	if body.corrode_stacks > 0:
-		sear_damage *= 1.5
+		wrath_sear *= 1.5
 
 	body.take_damage(damage, "magic", ["Interrupt"])
 	body.apply_sear(wrath_sear, WRATH_SEAR_DURATION)

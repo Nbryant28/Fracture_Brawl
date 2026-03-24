@@ -18,6 +18,7 @@ var primary_meter_max = 100.0
 # ============================================================
 var model_node: Node3D = null
 var anim_player: AnimationPlayer = null
+var facing_angle = 0.0  # last confirmed facing direction
 
 # ============================================================
 # STATE FLAGS
@@ -218,21 +219,20 @@ func handle_facing():
 	if model_node == null:
 		return
 	
-	# Only rotate if actually moving
 	var move_vec = Vector2(velocity.x, velocity.z)
 	if move_vec.length() < 0.1:
 		return
 	
-	# Calculate angle from movement direction
-	var target_angle = atan2(move_vec.x, move_vec.y)
+	# Logical facing — used for hitbox direction (corrected axis)
+	facing_angle = atan2(move_vec.x, -move_vec.y)
 	
-	# Smooth rotation — lerp toward target
+	# Visual facing — used for model rotation (original axis)
+	var visual_angle = atan2(move_vec.x, move_vec.y)
 	model_node.rotation.y = lerp_angle(
-		model_node.rotation.y, 
-		target_angle, 
+		model_node.rotation.y,
+		visual_angle,
 		0.2
 	)
-
 # ============================================================
 # ANIMATION — universal for all characters
 # ============================================================
@@ -582,6 +582,64 @@ func handle_blink(delta):
 			if model_node:
 				model_node.visible = true
 			is_invincible = false
+
+# ============================================================
+# FACING OFFSET — UNIVERSAL
+# Converts a local-space offset into world space based on
+# the model's current Y rotation. Use this for EVERY hitbox
+# so attacks always come from the direction the character faces.
+#
+# Local-space convention (same for all classes):
+#   Z negative = in front of character
+#   Z positive = behind character
+#   X positive = to character's right
+#   X negative = to character's left
+#   Y           = height, unchanged
+#
+# Example: get_facing_offset(Vector3(0, 1.0, -2.0))
+#   → 2 units directly in front, 1 unit up
+#
+# Classes with directional override (Cross-Platform, teleport,
+# omnidirectional abilities) pass the world-space position
+# directly and skip this function entirely.
+# ============================================================
+func get_facing_offset(local_offset: Vector3) -> Vector3:
+	var angle = facing_angle
+	var cos_a = cos(angle)
+	var sin_a = sin(angle)
+	return Vector3(
+		local_offset.x * cos_a - local_offset.z * sin_a,
+		local_offset.y,
+		local_offset.x * sin_a + local_offset.z * cos_a
+	)
+
+# ============================================================
+# SPAWN HITBOX — UNIVERSAL HELPER
+# Creates a box hitbox at a facing-relative local offset,
+# connects a callback, auto-frees after lifetime seconds.
+# Returns the Area3D so callers can store it if needed.
+#
+# Usage:
+#   spawn_hitbox(Vector3(1.5, 1.5, 1.5), Vector3(0, 1.0, -2.0), 0.25, _on_my_hit)
+#
+# For abilities that are intentionally NOT facing-relative
+# (e.g. Retribution AoE, Aegis pulse, Crusade Sacred Verdict)
+# use a SphereShape directly — those are already centered on self.
+# ============================================================
+func spawn_hitbox(box_size: Vector3, local_offset: Vector3, lifetime: float, callback: Callable) -> Area3D:
+	var hitbox = Area3D.new()
+	var shape = CollisionShape3D.new()
+	var box = BoxShape3D.new()
+	box.size = box_size
+	shape.shape = box
+	hitbox.add_child(shape)
+	hitbox.position = get_facing_offset(local_offset)
+	add_child(hitbox)
+	hitbox.body_entered.connect(callback)
+	get_tree().create_timer(lifetime).timeout.connect(
+		func(): if is_instance_valid(hitbox): hitbox.queue_free()
+	)
+	return hitbox
 
 # ============================================================
 # DEATH
