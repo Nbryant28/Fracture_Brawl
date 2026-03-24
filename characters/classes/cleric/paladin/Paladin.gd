@@ -47,6 +47,47 @@ func get_sanctity_tier() -> int:
 		return 2
 	else:
 		return 1
+# ============================================================
+# Ability Data
+# ============================================================
+func get_ability_data() -> Array:
+	return [
+		{
+			"name": "Indomitable", "icon": "res://ui/hud/icons/paladin/indomitable.png",
+			"type": "passive", "cooldown_var": "indomitable_used", "key": ""
+		},
+		{
+			"name": "Holy Presence", "icon": "res://ui/hud/icons/paladin/holy_presence.png",
+			"type": "passive", "cooldown_var": "", "key": ""
+		},
+		{
+			"name": "Bulwark", "icon": "res://ui/hud/icons/paladin/bulwark.png",
+			"type": "passive", "cooldown_var": "", "key": ""
+		},
+		{
+			"name": "Divine Retaliation", "icon": "res://ui/hud/icons/paladin/divine_retaliation.png",
+			"type": "passive", "cooldown_var": "", "key": ""
+		},
+		{
+			"name": "Hallowed Ground", "icon": "res://ui/hud/icons/paladin/hallowed_ground.png",
+			"type": "passive", "cooldown_var": "", "key": ""
+		},
+		{
+			"name": "Aegis", "icon": "res://ui/hud/icons/paladin/aegis.png",
+			"type": "ability", "cooldown_var": "aegis_cooldown",
+			"cooldown_max": 10.0, "key": "V"
+		},
+		{
+			"name": "Retribution", "icon": "res://ui/hud/icons/paladin/retribution.png",
+			"type": "ability", "cooldown_var": "retribution_cooldown",
+			"cooldown_max": 8.0, "key": "B"
+		},
+		{
+			"name": "Crusade", "icon": "res://ui/hud/icons/paladin/crusade.png",
+			"type": "ultimate", "cooldown_var": "crusade_cooldown",
+			"cooldown_max": 30.0, "key": "V+B"
+		},
+	]
 
 # ============================================================
 # INDOMITABLE — once per match

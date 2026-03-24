@@ -284,6 +284,9 @@ func detect_dash():
 		else:
 			last_tap_direction = direction
 			last_tap_time = current_time
+# Override in each subclass to provide ability UI data
+func get_ability_data() -> Array:
+	return []
 
 # ============================================================
 # UNIVERSAL COMBAT
