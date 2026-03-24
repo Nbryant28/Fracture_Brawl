@@ -1,0 +1,159 @@
+[gd_scene format=3 uid="uid://cjpq8wyxwbxtq"]
+
+[ext_resource type="Script" uid="uid://cs85hy8du3xut" path="res://camera/camera_3d.gd" id="1_1bvp3"]
+[ext_resource type="Script" uid="uid://dq2lyocf7el74" path="res://systems/blast_zone.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://clcwfy5wkklla" path="res://characters/classes/cleric/paladin/Paladin.gd" id="2_7mycd"]
+[ext_resource type="PackedScene" uid="uid://bk7ina14cpbrs" path="res://characters/classes/cleric/paladin/model/Paladinv1.glb" id="3_7mycd"]
+[ext_resource type="Script" uid="uid://e7hqi6tsyc2n" path="res://enemies/cpu_opponent/cpu_opponent.gd" id="4_7mycd"]
+[ext_resource type="Script" uid="uid://bdabx3yc2pofb" path="res://systems/canvas_layer.gd" id="5_lquwl"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_h2yge"]
+size = Vector3(36, 2, 17)
+subdivide_width = 20
+subdivide_height = 1
+subdivide_depth = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
+albedo_color = Color(0.16470589, 0.16470589, 0.16470589, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lquwl"]
+size = Vector3(36, 2, 17)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0xm2m"]
+size = Vector3(23, 2, 7)
+subdivide_width = 20
+subdivide_height = 1
+subdivide_depth = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ig7tw"]
+albedo_color = Color(0.22745098, 0.22745098, 0.22745098, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1bvp3"]
+size = Vector3(23, 2, 7)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7dm0k"]
+size = Vector3(23, 2, 7)
+subdivide_width = 20
+subdivide_height = 1
+subdivide_depth = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1bvp3"]
+albedo_color = Color(0.101960786, 0.101960786, 0.24313726, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0xm2m"]
+size = Vector3(23, 2, 7)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_272bh"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_0xm2m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lquwl"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_h2yge"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7mycd"]
+size = Vector3(200, 12, 200)
+
+[sub_resource type="Environment" id="Environment_lquwl"]
+background_mode = 1
+background_color = Color(0.06008949, 0.060090564, 0.08399328, 1)
+ambient_light_color = Color(0.101960786, 0.101960786, 0.24313726, 1)
+ambient_light_energy = 0.3
+ssao_enabled = true
+glow_enabled = true
+glow_intensity = 0.88
+glow_bloom = 0.3
+
+[node name="Node3D" type="Node3D" unique_id=1153559371]
+
+[node name="Main platform 1" type="StaticBody3D" parent="." unique_id=1391349093]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Main platform 1" unique_id=1535966243]
+mesh = SubResource("BoxMesh_h2yge")
+surface_material_override/0 = SubResource("StandardMaterial3D_h2yge")
+
+[node name="Platform1_CollisionShape3D" type="CollisionShape3D" parent="Main platform 1" unique_id=1010850412]
+shape = SubResource("BoxShape3D_lquwl")
+
+[node name="Bridge Connector" type="StaticBody3D" parent="." unique_id=1624800839]
+transform = Transform3D(0.90630776, 0.42261827, 0, -0.42261827, 0.90630776, 0, 0, 0, 1, 1, 4, -3)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Bridge Connector" unique_id=602252056]
+mesh = SubResource("BoxMesh_0xm2m")
+surface_material_override/0 = SubResource("StandardMaterial3D_ig7tw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Bridge Connector" unique_id=282889080]
+shape = SubResource("BoxShape3D_1bvp3")
+
+[node name="Bridge" type="StaticBody3D" parent="." unique_id=248862161]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 8.5, -3)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Bridge" unique_id=387033156]
+mesh = SubResource("BoxMesh_7dm0k")
+surface_material_override/0 = SubResource("StandardMaterial3D_1bvp3")
+
+[node name="Bridge_CollisionShape3D" type="CollisionShape3D" parent="Bridge" unique_id=756602549]
+shape = SubResource("BoxShape3D_0xm2m")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=344322277]
+transform = Transform3D(0.70710677, 0.49999997, -0.49999997, 0, 0.70710677, 0.70710677, 0.70710677, -0.49999997, 0.49999997, 0, 20, 5)
+light_color = Color(1, 0.99215686, 0.9411765, 1)
+light_energy = 1.238
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1969671031]
+transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 7, 21)
+current = true
+fov = 60.0
+script = ExtResource("1_1bvp3")
+
+[node name="Paladin" type="CharacterBody3D" parent="." unique_id=878117260 groups=["characters"]]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -6, 4, 2)
+script = ExtResource("2_7mycd")
+
+[node name="Model" type="Node3D" parent="Paladin" unique_id=872851283]
+
+[node name="Paladinv1" parent="Paladin/Model" unique_id=1274465419 instance=ExtResource("3_7mycd")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Paladin" unique_id=1702167315]
+shape = SubResource("CapsuleShape3D_272bh")
+
+[node name="cpu_enemy" type="CharacterBody3D" parent="." unique_id=2066412450 groups=["characters"]]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 7.7685165, 4.0173697, 2)
+script = ExtResource("4_7mycd")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="cpu_enemy" unique_id=94733851]
+mesh = SubResource("CapsuleMesh_0xm2m")
+surface_material_override/0 = SubResource("StandardMaterial3D_lquwl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="cpu_enemy" unique_id=1482596175]
+shape = SubResource("CapsuleShape3D_h2yge")
+
+[node name="BlastZone" type="Area3D" parent="." unique_id=226758250]
+script = ExtResource("2_0xm2m")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BlastZone" unique_id=516303904]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -50, 0)
+shape = SubResource("BoxShape3D_7mycd")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=36777810]
+environment = SubResource("Environment_lquwl")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=915480674]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.038, 4.811)
+light_color = Color(0.2901961, 0, 1, 1)
+light_energy = 7.723
+omni_range = 21.717
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=406263026]
+script = ExtResource("5_lquwl")
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1625092890]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
